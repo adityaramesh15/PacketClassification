@@ -7,7 +7,7 @@ This is a simple packet sniffer written in C++ using the libpcap library. It cap
 ### Prerequisites
 - CMake
 - libpcap
-- JSON library (e.g., JSON for Modern C++ or JsonCpp)
+- JSON for Modern C++
 
 ### Building
 ```bash
