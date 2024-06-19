@@ -9,9 +9,10 @@ This is a simple packet sniffer written in C++ using the libtins library. It cap
 - libtins (and its associated dependencies)
 - JSON for Modern C++
 
-### Building
+### Building and Run
 ```bash
 mkdir build
 cd build
 cmake ../ -DLIBTINS_ENABLE_CXX11=1 
 make
+./PacketSniffer
