@@ -1,2 +1,2 @@
 # PacketClassification
-WIP for ML based Network-Packet Classification
+WIP for ML based Network-Packet Anomaly Detection
