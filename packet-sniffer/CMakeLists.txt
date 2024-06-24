@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 
-include_directories("/opt/homebrew/opt/libtins/include" "include")
+include_directories("/opt/homebrew/opt/libtins/include" "include" "/opt/homebrew/Cellar/nlohmann-json/3.11.3/include")
 
 find_library(TINS_LIBRARY tins)
 

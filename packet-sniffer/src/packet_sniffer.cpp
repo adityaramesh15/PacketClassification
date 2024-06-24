@@ -1,6 +1,7 @@
 #include "packet_sniffer.hpp"
+#include "packet_parser.hpp"
 
-PacketSniffer::PacketSniffer() : interface_("eth0"), promiscuous_(true), snapshot_length_(65535) {}
+PacketSniffer::PacketSniffer() : interface_("en0"), promiscuous_(true), snapshot_length_(65535) {}
 
 PacketSniffer::PacketSniffer(const std::string& interface, const std::string& address, const std::string& port, bool promiscuous, int snap) :
     interface_(interface), filter_address_(address), filter_port_(port), promiscuous_(promiscuous), snapshot_length_(snap) {}
@@ -29,25 +30,22 @@ SnifferConfiguration PacketSniffer::configureSniffer() const {
 }
 
 void PacketSniffer::signalHandler(int signal_num) {
-    //If quit signal comes through return true, else false
     std::cout << "Packet Collection Process was terminated" << std::endl;
     exit(signal_num);
 }
 
 bool PacketSniffer::sniffFunctor(const Packet& packet) {
-    /*
-        REWRITE BETTER DOCUMENTATION BELOW: 
-        check for quit signal
-        Make parse object
-        call parse
-        add serialized data to redis
-    */
-   
     static bool initialized = false;
     if (!initialized) {
-        signal(SIGTERM, PacketSniffer::signalHandler);
+        signal(SIGINT, PacketSniffer::signalHandler);
         initialized = true;
     }
+
+    PacketParser parser;
+    std::string result = parser.parse(packet);
+    std::string serialized = parser.toJSON(result);
+
+    //Do Socket sending to python here
 
     return true; 
 }

@@ -11,8 +11,8 @@ using namespace Tins;
 
 class PacketSniffer {
     /*  
-        Constructor - initialize member variables & does sniffer configuration
-        Destructor - clean up resources if necessary
+        Constructor - Initialize member variables & does sniffer configuration
+        Destructor - Clean up resources if necessary
         
         Function - Loop sniffing until condition is met, adds to packet vector
         Function - Helper to setup the sniffer
