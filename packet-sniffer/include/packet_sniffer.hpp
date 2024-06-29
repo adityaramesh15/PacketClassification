@@ -49,8 +49,6 @@ class PacketSniffer {
         int snapshot_length_;
 
         SnifferConfiguration configureSniffer() const; 
-        
-        
 };
 
 

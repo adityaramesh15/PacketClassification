@@ -30,6 +30,7 @@ SnifferConfiguration PacketSniffer::configureSniffer() const {
 }
 
 void PacketSniffer::signalHandler(int signal_num) {
+    //Implement some form of recoverable start and start 
     std::cout << "Packet Collection Process was terminated" << std::endl;
     exit(signal_num);
 }
@@ -43,9 +44,8 @@ bool PacketSniffer::sniffFunctor(const Packet& packet) {
 
     PacketParser parser;
     std::string result = parser.parse(packet);
-    std::string serialized = parser.toJSON(result);
-
-    //Do Socket sending to python here
+    std::cout << result << std::endl;
+    //Figure out some sort of Sending mechanism (NOT SOCKETS)
 
     return true; 
 }

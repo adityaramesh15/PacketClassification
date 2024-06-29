@@ -6,5 +6,6 @@
 using namespace Tins;
 
 int main() {   
-    
+    PacketSniffer my_sniffer;
+    my_sniffer.sniff();
 }
