@@ -44,7 +44,7 @@ bool PacketSniffer::sniffFunctor(const Packet& packet) {
 
     PacketParser parser;
     std::string result = parser.parse(packet);
-    std::cout << result << std::endl;
+    std::cout << result << "\n" << std::endl;
     //Figure out some sort of Sending mechanism (NOT SOCKETS)
 
     return true; 

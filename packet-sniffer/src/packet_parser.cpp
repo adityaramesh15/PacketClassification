@@ -34,14 +34,12 @@ std::string PacketParser::parse(const Packet& packet) {
             service_ = service_name(tcp->dport());
             flag_ = tcp->flags();
             urgent_ = tcp->get_flag(TCP::URG);
-        }
-        else if (const UDP* udp = packet.pdu()->find_pdu<UDP>()) {
+        } else if (const UDP* udp = packet.pdu()->find_pdu<UDP>()) {
             protocol_type_ = "udp";
             service_ = service_name(udp->dport());
-            flag_ = ""; 
+            flag_ = "none"; 
             urgent_ = false;
-        }
-        else {
+        } else {
             protocol_type_ = "other";
             service_ = "unknown";
             flag_ = "";
@@ -50,7 +48,6 @@ std::string PacketParser::parse(const Packet& packet) {
 
         std::string service_key = dst_ip + "-" + service_;
         srv_count_ = ++service_count_[service_key];
-        std::string dst_host_srv_key = dst_ip + "-" + service_;
 
         int total_connections = 0;
         int same_srv_connections = 0;
@@ -76,9 +73,10 @@ std::string PacketParser::parse(const Packet& packet) {
             diff_srv_rate_ = static_cast<double>(diff_srv_connections) / total_connections;
             srv_diff_host_rate_ = static_cast<double>(srv_diff_host_connections) / total_connections;
         }
-    }
-
-    return toJSON(); 
+        
+        return toJSON(); 
+    } 
+    return "No IP Found";
 }
 
 
@@ -112,9 +110,12 @@ std::string PacketParser::service_name(int port) {
         case 123: return "ntp";
         case 143: return "imap";
         case 161: return "snmp";
+        case 53: return "dns";
+        case 67: return "bootstrap/dhcp";
+        case 137: return "netbios";
         default: 
-            if(port > 49152){
-                return "temp";
+            if(port >= 49152 && port <= 65535) {
+                return "ephemeral";
             } else {
                 return std::to_string(port);
             }
