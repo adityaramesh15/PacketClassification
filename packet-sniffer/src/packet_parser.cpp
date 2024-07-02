@@ -74,9 +74,9 @@ std::string PacketParser::parse(const Packet& packet) {
             srv_diff_host_rate_ = static_cast<double>(srv_diff_host_connections) / total_connections;
         }
         
-        return toJSON(); 
-    } 
-    return "No IP Found";
+        return "IP";//toJSON(); 
+    }
+    return pdu_name(packet.pdu()->inner_pdu()->pdu_type());
 }
 
 
@@ -119,6 +119,32 @@ std::string PacketParser::service_name(int port) {
             } else {
                 return std::to_string(port);
             }
+    }
+
+}
+
+std::string PacketParser::pdu_name(PDU::PDUType type) {
+    static const std::unordered_map<PDU::PDUType, std::string> pdu_type_map = {
+        { PDU::ETHERNET_II, "Ethernet II" },
+        { PDU::IP, "IP" },
+        { PDU::IPv6, "IPv6" },
+        { PDU::ARP, "ARP" },
+        { PDU::ICMP, "ICMP" },
+        { PDU::ICMPv6, "ICMPv6" },
+        { PDU::TCP, "TCP" },
+        { PDU::UDP, "UDP" },
+        { PDU::DNS, "DNS" },
+        { PDU::DHCP, "DHCP" },
+        { PDU::DHCPv6, "DHCPv6" },
+        { PDU::EAPOL, "EAPOL" },
+        { PDU::RAW, "RawPDU" }
+    };
+
+    auto it = pdu_type_map.find(type);
+    if (it != pdu_type_map.end()) {
+        return it->second;
+    } else {
+        return "Unknown";
     }
 
 }
