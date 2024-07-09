@@ -12,71 +12,95 @@ PacketParser::PacketParser() : duration_(0), protocol_type_(""), service_(""), f
 std::string PacketParser::parse(const Packet& packet) {
     auto timestamp = std::chrono::system_clock::now();
     static auto last_packet_time = timestamp;
-
     duration_ = std::chrono::duration<double>(timestamp - last_packet_time).count();
     last_packet_time = timestamp;
 
-    if(packet.pdu() -> find_pdu<IP>()) {
-        const IP& ip = packet.pdu()->rfind_pdu<IP>();
-        src_bytes_ = ip.tot_len();
-        
-        std::string src_ip = ip.src_addr().to_string();
-        std::string dst_ip = ip.dst_addr().to_string();
-        land_ = (src_ip == dst_ip);
-        
-        wrong_fragment_ = (ip.flags() & IP::MORE_FRAGMENTS);
-
-        std::string connection_key = src_ip + "-" + dst_ip;
-        count_ = ++connection_count_[connection_key];
-
-        if (const TCP* tcp = packet.pdu()->find_pdu<TCP>()) {
-            protocol_type_ = "tcp";
-            service_ = service_name(tcp->dport());
-            flag_ = tcp->flags();
-            urgent_ = tcp->get_flag(TCP::URG);
-        } else if (const UDP* udp = packet.pdu()->find_pdu<UDP>()) {
-            protocol_type_ = "udp";
-            service_ = service_name(udp->dport());
-            flag_ = "none"; 
-            urgent_ = false;
-        } else {
-            protocol_type_ = "other";
-            service_ = "unknown";
-            flag_ = "";
-            urgent_ = false;
-        }
-
-        std::string service_key = dst_ip + "-" + service_;
-        srv_count_ = ++service_count_[service_key];
-
-        int total_connections = 0;
-        int same_srv_connections = 0;
-        int diff_srv_connections = 0;
-        int srv_diff_host_connections = 0;
-
-        for (const auto& conn : connection_count_) {
-            total_connections++;
-            if (conn.first.find(dst_ip) != std::string::npos) {
-                if (service_count_.find(dst_ip + "-" + service_) != service_count_.end()) {
-                    same_srv_connections++;
-                } else {
-                    diff_srv_connections++;
-                }
-            }
-            if (conn.first.find("-" + service_) != std::string::npos && conn.first.find(dst_ip) == std::string::npos) {
-                srv_diff_host_connections++;
-            }
-        }
-
-        if (total_connections > 0) {
-            same_srv_rate_ = static_cast<double>(same_srv_connections) / total_connections;
-            diff_srv_rate_ = static_cast<double>(diff_srv_connections) / total_connections;
-            srv_diff_host_rate_ = static_cast<double>(srv_diff_host_connections) / total_connections;
-        }
-        
-        return "IP";//toJSON(); 
+    if(const IP* ip = packet.pdu()->find_pdu<IP>()) {
+        return parseIPv4(*ip);
+    } else if(const IPv6* ipv6 = packet.pdu()->find_pdu<IPv6>()) {
+        return parseIPv6(*ipv6);
+    } else {
+        return pdu_name(packet.pdu()->inner_pdu()->pdu_type());
     }
-    return pdu_name(packet.pdu()->inner_pdu()->pdu_type());
+}
+
+std::string PacketParser::parseIPv4(const IP& ip) {
+    protocol_type_ = "ipv4";
+    src_bytes_ = ip.tot_len();
+    
+    std::string src_ip = ip.src_addr().to_string();
+    std::string dst_ip = ip.dst_addr().to_string();
+    land_ = (src_ip == dst_ip);
+    
+    wrong_fragment_ = (ip.flags() & IP::MORE_FRAGMENTS);
+
+    std::string connection_key = src_ip + "-" + dst_ip;
+    count_ = ++connection_count_[connection_key];
+
+    parseTcpUdp(ip);
+
+    std::string service_key = dst_ip + "-" + service_;
+    srv_count_ = ++service_count_[service_key];
+
+    calculateRates(dst_ip);
+    
+    return toJSON();
+}
+
+std::string PacketParser::parseIPv6(const IPv6& ipv6) {
+    protocol_type_ = "ipv6";
+    src_bytes_ = ipv6.payload_length() + 40; 
+    
+    std::string src_ip = ipv6.src_addr().to_string();
+    std::string dst_ip = ipv6.dst_addr().to_string();
+    land_ = (src_ip == dst_ip);
+    
+    wrong_fragment_ = false;
+    for (const auto& header : ipv6.headers()) {
+        if (header.option() == IPv6::FRAGMENT) {
+            wrong_fragment_ = true;
+            break;
+        }
+    }
+
+    std::string connection_key = src_ip + "-" + dst_ip;
+    count_ = ++connection_count_[connection_key];
+
+    parseTcpUdp(ipv6);
+
+    std::string service_key = dst_ip + "-" + service_;
+    srv_count_ = ++service_count_[service_key];
+
+    calculateRates(dst_ip);
+    
+    return toJSON();
+}
+
+void PacketParser::calculateRates(const std::string& dst_ip) {
+    int total_connections = 0;
+    int same_srv_connections = 0;
+    int diff_srv_connections = 0;
+    int srv_diff_host_connections = 0;
+
+    for (const auto& conn : connection_count_) {
+        total_connections++;
+        if (conn.first.find(dst_ip) != std::string::npos) {
+            if (service_count_.find(dst_ip + "-" + service_) != service_count_.end()) {
+                same_srv_connections++;
+            } else {
+                diff_srv_connections++;
+            }
+        }
+        if (conn.first.find("-" + service_) != std::string::npos && conn.first.find(dst_ip) == std::string::npos) {
+            srv_diff_host_connections++;
+        }
+    }
+
+    if (total_connections > 0) {
+        same_srv_rate_ = static_cast<double>(same_srv_connections) / total_connections;
+        diff_srv_rate_ = static_cast<double>(diff_srv_connections) / total_connections;
+        srv_diff_host_rate_ = static_cast<double>(srv_diff_host_connections) / total_connections;
+    }
 }
 
 
@@ -113,6 +137,7 @@ std::string PacketParser::service_name(int port) {
         case 53: return "dns";
         case 67: return "bootstrap/dhcp";
         case 137: return "netbios";
+        case 5353: return "multicast dns";
         default: 
             if(port >= 49152 && port <= 65535) {
                 return "ephemeral";

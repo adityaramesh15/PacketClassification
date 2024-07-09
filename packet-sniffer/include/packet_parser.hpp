@@ -59,6 +59,33 @@ class PacketParser {
 
         std::string service_name(int port);
         std::string pdu_name(PDU::PDUType type);
+
+        std::string parseIPv6(const IPv6& ipv6);
+        std::string parseIPv4(const IP& ipv4);
+
+        void calculateRates(const std::string& dst_ip);
+
+        template<typename IPType>
+        void parseTcpUdp(const IPType& ip);
+
+        
 };
+
+template<typename IPType>
+void PacketParser::parseTcpUdp(const IPType& ip) {
+    if (const Tins::TCP* tcp = ip.template find_pdu<Tins::TCP>()) {
+        service_ = service_name(tcp->dport());
+        flag_ = std::to_string(tcp->flags());
+        urgent_ = tcp->get_flag(Tins::TCP::URG);
+    } else if (const Tins::UDP* udp = ip.template find_pdu<Tins::UDP>()) {
+        service_ = service_name(udp->dport());
+        flag_ = "none"; 
+        urgent_ = false;
+    } else {
+        service_ = "unknown";
+        flag_ = "unknown";
+        urgent_ = false;
+    }
+}
 
 #endif
