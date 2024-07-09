@@ -1,4 +1,6 @@
-# PacketClassification
-WIP for ML based Network-Packet Anomaly Detection
+# Packet Anamoly Detection
+WIP for ML based Network-Packet Anomaly Detection.
 
-# Project UML
+## Components
+1. C++: Packet collecting and parsing
+2. Python: Packet analysis
