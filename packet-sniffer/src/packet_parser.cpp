@@ -6,8 +6,7 @@ using json = nlohmann::json;
 
 PacketParser::PacketParser() : duration_(0), protocol_type_(""), service_(""), flag_(""),
       src_bytes_(0), land_(false), wrong_fragment_(false), urgent_(false),
-      count_(0), srv_count_(0), same_srv_rate_(0.0), diff_srv_rate_(0.0),
-      srv_diff_host_rate_(0.0) {}
+      count_(0), srv_count_(0) {}
 
 std::string PacketParser::parse(const Packet& packet) {
     auto timestamp = std::chrono::system_clock::now();
@@ -25,7 +24,6 @@ std::string PacketParser::parse(const Packet& packet) {
 }
 
 std::string PacketParser::parseIPv4(const IP& ip) {
-    protocol_type_ = "ipv4";
     src_bytes_ = ip.tot_len();
     
     std::string src_ip = ip.src_addr().to_string();
@@ -41,14 +39,11 @@ std::string PacketParser::parseIPv4(const IP& ip) {
 
     std::string service_key = dst_ip + "-" + service_;
     srv_count_ = ++service_count_[service_key];
-
-    calculateRates(dst_ip);
     
     return toJSON();
 }
 
 std::string PacketParser::parseIPv6(const IPv6& ipv6) {
-    protocol_type_ = "ipv6";
     src_bytes_ = ipv6.payload_length() + 40; 
     
     std::string src_ip = ipv6.src_addr().to_string();
@@ -70,38 +65,10 @@ std::string PacketParser::parseIPv6(const IPv6& ipv6) {
 
     std::string service_key = dst_ip + "-" + service_;
     srv_count_ = ++service_count_[service_key];
-
-    calculateRates(dst_ip);
     
     return toJSON();
 }
 
-void PacketParser::calculateRates(const std::string& dst_ip) {
-    int total_connections = 0;
-    int same_srv_connections = 0;
-    int diff_srv_connections = 0;
-    int srv_diff_host_connections = 0;
-
-    for (const auto& conn : connection_count_) {
-        total_connections++;
-        if (conn.first.find(dst_ip) != std::string::npos) {
-            if (service_count_.find(dst_ip + "-" + service_) != service_count_.end()) {
-                same_srv_connections++;
-            } else {
-                diff_srv_connections++;
-            }
-        }
-        if (conn.first.find("-" + service_) != std::string::npos && conn.first.find(dst_ip) == std::string::npos) {
-            srv_diff_host_connections++;
-        }
-    }
-
-    if (total_connections > 0) {
-        same_srv_rate_ = static_cast<double>(same_srv_connections) / total_connections;
-        diff_srv_rate_ = static_cast<double>(diff_srv_connections) / total_connections;
-        srv_diff_host_rate_ = static_cast<double>(srv_diff_host_connections) / total_connections;
-    }
-}
 
 
 std::string PacketParser::toJSON() {
@@ -116,9 +83,6 @@ std::string PacketParser::toJSON() {
     j["urgent"] = urgent_;
     j["count"] = count_;
     j["srv_count"] = srv_count_;
-    j["same_srv_rate"] = same_srv_rate_;
-    j["diff_srv_rate"] = diff_srv_rate_;
-    j["srv_diff_host_rate"] = srv_diff_host_rate_;  
     return j.dump();
 }
 
@@ -138,6 +102,7 @@ std::string PacketParser::service_name(int port) {
         case 67: return "bootstrap/dhcp";
         case 137: return "netbios";
         case 5353: return "multicast dns";
+        case 5223: return "apn"; 
         default: 
             if(port >= 49152 && port <= 65535) {
                 return "ephemeral";

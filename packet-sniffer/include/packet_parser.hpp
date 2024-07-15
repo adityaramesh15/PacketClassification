@@ -21,6 +21,7 @@ class PacketParser {
         Object - Parser object that'll be used for sniffing from Packet
 
         Data - duration: Length of time of the connection
+        Data - protocol type: 
         Data - service: The Protocol that was used in the connection
         Data - flag: Status of the connection
         Data - src_bytes: Number of data bytes transferred from source to destination in single connection
@@ -51,9 +52,6 @@ class PacketParser {
         bool urgent_;
         int count_;
         int srv_count_;
-        double same_srv_rate_;
-        double diff_srv_rate_;
-        double srv_diff_host_rate_;
         std::unordered_map<std::string, int> connection_count_;
         std::unordered_map<std::string, int> service_count_;
 
@@ -62,8 +60,6 @@ class PacketParser {
 
         std::string parseIPv6(const IPv6& ipv6);
         std::string parseIPv4(const IP& ipv4);
-
-        void calculateRates(const std::string& dst_ip);
 
         template<typename IPType>
         void parseTcpUdp(const IPType& ip);
@@ -74,10 +70,12 @@ class PacketParser {
 template<typename IPType>
 void PacketParser::parseTcpUdp(const IPType& ip) {
     if (const Tins::TCP* tcp = ip.template find_pdu<Tins::TCP>()) {
+        protocol_type_ = "tcp"
         service_ = service_name(tcp->dport());
         flag_ = std::to_string(tcp->flags());
         urgent_ = tcp->get_flag(Tins::TCP::URG);
     } else if (const Tins::UDP* udp = ip.template find_pdu<Tins::UDP>()) {
+        protocol_type_ = "udp"
         service_ = service_name(udp->dport());
         flag_ = "none"; 
         urgent_ = false;
