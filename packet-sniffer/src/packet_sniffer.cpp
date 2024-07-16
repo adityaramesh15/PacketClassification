@@ -45,9 +45,6 @@ bool PacketSniffer::sniffFunctor(const Packet& packet) {
     PacketParser parser;
     writeData("../../data/cafe-data.txt", parser.parse(packet));
 
-    // std::string result = parser.parse(packet);
-    // std::cout << result << "\n" << std::endl;
-
     //TO DO: IPC to Transmit Python
 
     return true; 

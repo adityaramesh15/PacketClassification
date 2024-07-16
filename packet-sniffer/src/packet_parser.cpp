@@ -1,8 +1,13 @@
 #include "packet_parser.hpp"
 #include <chrono> 
+#include <iostream> 
 
 using namespace Tins; 
 using json = nlohmann::json;
+
+//Initialization of static variables for linking
+std::unordered_map<std::string, int> PacketParser::connection_count_;
+std::unordered_map<std::string, int> PacketParser::service_count_;
 
 PacketParser::PacketParser() : duration_(0), protocol_type_(""), service_(""), flag_(""),
       src_bytes_(0), land_(false), wrong_fragment_(false), urgent_(false),
@@ -33,12 +38,12 @@ std::string PacketParser::parseIPv4(const IP& ip) {
     wrong_fragment_ = (ip.flags() & IP::MORE_FRAGMENTS);
 
     std::string connection_key = src_ip + "-" + dst_ip;
-    count_ = ++connection_count_[connection_key];
+    count_ = connection_count_[connection_key]++;
 
     parseTcpUdp(ip);
 
     std::string service_key = dst_ip + "-" + service_;
-    srv_count_ = ++service_count_[service_key];
+    srv_count_ = service_count_[service_key]++;
     
     return toJSON();
 }
@@ -59,12 +64,12 @@ std::string PacketParser::parseIPv6(const IPv6& ipv6) {
     }
 
     std::string connection_key = src_ip + "-" + dst_ip;
-    count_ = ++connection_count_[connection_key];
+    count_ = connection_count_[connection_key]++;
 
     parseTcpUdp(ipv6);
 
     std::string service_key = dst_ip + "-" + service_;
-    srv_count_ = ++service_count_[service_key];
+    srv_count_ = service_count_[service_key]++;
     
     return toJSON();
 }

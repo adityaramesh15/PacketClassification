@@ -52,8 +52,8 @@ class PacketParser {
         bool urgent_;
         int count_;
         int srv_count_;
-        std::unordered_map<std::string, int> connection_count_;
-        std::unordered_map<std::string, int> service_count_;
+        static std::unordered_map<std::string, int> connection_count_;
+        static std::unordered_map<std::string, int> service_count_;
 
         std::string service_name(int port);
         std::string pdu_name(PDU::PDUType type);
@@ -70,12 +70,15 @@ class PacketParser {
 template<typename IPType>
 void PacketParser::parseTcpUdp(const IPType& ip) {
     if (const Tins::TCP* tcp = ip.template find_pdu<Tins::TCP>()) {
-        protocol_type_ = "tcp"
+        protocol_type_ = "tcp";
         service_ = service_name(tcp->dport());
-        flag_ = std::to_string(tcp->flags());
-        urgent_ = tcp->get_flag(Tins::TCP::URG);
+        urgent_ = tcp->get_flag(TCP::URG);
+        flag_ = tcp->get_flag(TCP::SYN) ? "SYN" : 
+                tcp->get_flag(TCP::FIN) ? "FIN" :
+                tcp->get_flag(TCP::RST) ? "RST" : 
+                tcp->get_flag(TCP::ACK) ? "ACK" : "NONE";
     } else if (const Tins::UDP* udp = ip.template find_pdu<Tins::UDP>()) {
-        protocol_type_ = "udp"
+        protocol_type_ = "udp"; 
         service_ = service_name(udp->dport());
         flag_ = "none"; 
         urgent_ = false;

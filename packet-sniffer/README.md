@@ -23,19 +23,16 @@ sudo ./PacketSniffer
 ## Example Ouput
 ```bash
 {
-  "count": 1,
-  "diff_srv_rate": 0,
-  "duration": 0,
-  "flag": "",
-  "land": false,
-  "protocol_type": "udp",
-  "same_srv_rate": 1,
-  "service": "https",
-  "src_bytes": 69,
-  "srv_count": 1,
-  "srv_diff_host_rate": 0,
-  "urgent": false,
-  "wrong_fragment": false
+  "count":133,
+  "duration":0.000103,
+  "flag":"ACK",
+  "land":false,
+  "protocol_type":"tcp",
+  "service":"https",
+  "src_bytes":1500,
+  "srv_count":133,
+  "urgent":false,
+  "wrong_fragment":false
 }
 ```
 
