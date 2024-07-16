@@ -43,11 +43,22 @@ bool PacketSniffer::sniffFunctor(const Packet& packet) {
     }
 
     PacketParser parser;
-    std::string result = parser.parse(packet);
-    std::cout << result << "\n" << std::endl;
-    //TO DO: Figure out some sort of Sending mechanism (NOT SOCKETS)
+    writeData("../../data/cafe-data.txt", parser.parse(packet));
+
+    //TO DO: IPC to Transmit Python
 
     return true; 
+}
+
+void PacketSniffer::writeData(std::string location, std::string data) {
+    std::ofstream outfile(location, std::ios::app);
+    if(outfile.is_open()) {
+        outfile << data << std::endl;
+        outfile.close();
+    } else {
+        std::cerr << "Cannot open file" << std::endl;
+    }
+
 }
 
 

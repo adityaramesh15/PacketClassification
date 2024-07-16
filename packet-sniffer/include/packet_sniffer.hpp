@@ -6,6 +6,7 @@
 #include <string>
 #include <csignal>
 #include <iostream>
+#include <fstream>
 
 using namespace Tins; 
 
@@ -17,6 +18,7 @@ class PacketSniffer {
         Function - Loop sniffing until condition is met, adds to packet vector
         Function - Helper to setup the sniffer
         Function - Helper to terminate packet reading when signal arrives
+        Function - Collects data locally in data folder. 
         Functor - Condition for when to stop sniffing
     
         Setup: 
@@ -40,6 +42,7 @@ class PacketSniffer {
         void sniff();
         static void signalHandler(int signal_num);
         static bool sniffFunctor(const Packet&);
+        static void writeData(std::string location, std::string data);
 
     private:
         std::string interface_;
