@@ -27,7 +27,7 @@ sudo ./PacketSniffer
   "dst_ip":"52.216.56.58"
   "duration":0.000103,
   "flag":"ACK",
-  "location":"Illinois",
+  "location":"Virginia",
   "protocol_type":"tcp",
   "service":"https",
   "src_bytes":1500,
