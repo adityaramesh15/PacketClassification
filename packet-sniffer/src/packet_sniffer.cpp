@@ -31,7 +31,7 @@ SnifferConfiguration PacketSniffer::configureSniffer() const {
 
 void PacketSniffer::signalHandler(int signal_num) {
     //TODO: Implement some form of recoverable start and start 
-    std::cout << "Packet Collection Process was terminated" << std::endl;
+    std::cout << "\nPacket Collection Process was terminated" << std::endl;
     exit(signal_num);
 }
 

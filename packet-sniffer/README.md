@@ -24,15 +24,15 @@ sudo ./PacketSniffer
 ```bash
 {
   "count":133,
+  "dst_ip":"52.216.56.58"
   "duration":0.000103,
   "flag":"ACK",
-  "land":false,
+  "location":"Illinois",
   "protocol_type":"tcp",
   "service":"https",
   "src_bytes":1500,
+  "src_ip":"192.168.1.221",
   "srv_count":133,
-  "urgent":false,
-  "wrong_fragment":false
 }
 ```
 

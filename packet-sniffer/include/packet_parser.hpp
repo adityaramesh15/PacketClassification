@@ -25,15 +25,11 @@ class PacketParser {
         Data - service: The Protocol that was used in the connection
         Data - flag: Status of the connection
         Data - src_bytes: Number of data bytes transferred from source to destination in single connection
-        Data - land: if source and destination IP addresses and port numbers are equal then, this variable takes value 1, else 0
-        Data - wrong_fragment: Total number of wrong fragments in this connection
-        Data - urgent: Number of urgent packets in this connection. 
         Data - count: Number of connections to the same destination host as the current connection in the past two seconds
         Data - srv_count: Number of connections to the same service (port number) as the current connection in the past two seconds
-        Data - same_srv_rate_: The percentage of connections that were to the same service
-        Data - diff_srv_rate: The percentage of connections that were to different services
-        Data - srv_diff_host_rate_: The percentage of connections that were to different destination machines
-
+        Data - location_: Location of a packet's destination
+        Data - src_ip_: Source IP Address
+        Data - dst_ip_: Destination IP Address
     */
 
     public:
@@ -46,12 +42,13 @@ class PacketParser {
         std::string protocol_type_; 
         std::string service_; 
         std::string flag_;
+        std::string location_;
+        std::string src_ip_;
+        std::string dst_ip_; 
         int src_bytes_;
-        bool land_ = false;
-        bool wrong_fragment_ = false;
-        bool urgent_;
         int count_;
         int srv_count_;
+
         static std::unordered_map<std::string, int> connection_count_;
         static std::unordered_map<std::string, int> service_count_;
 
@@ -63,8 +60,8 @@ class PacketParser {
 
         template<typename IPType>
         void parseTcpUdp(const IPType& ip);
+        void calculateRates(const std::string& dst_ip);
 
-        
 };
 
 template<typename IPType>
@@ -72,7 +69,6 @@ void PacketParser::parseTcpUdp(const IPType& ip) {
     if (const Tins::TCP* tcp = ip.template find_pdu<Tins::TCP>()) {
         protocol_type_ = "tcp";
         service_ = service_name(tcp->dport());
-        urgent_ = tcp->get_flag(TCP::URG);
         flag_ = tcp->get_flag(TCP::SYN) ? "SYN" : 
                 tcp->get_flag(TCP::FIN) ? "FIN" :
                 tcp->get_flag(TCP::RST) ? "RST" : 
@@ -81,11 +77,9 @@ void PacketParser::parseTcpUdp(const IPType& ip) {
         protocol_type_ = "udp"; 
         service_ = service_name(udp->dport());
         flag_ = "none"; 
-        urgent_ = false;
     } else {
         service_ = "unknown";
         flag_ = "unknown";
-        urgent_ = false;
     }
 }
 
