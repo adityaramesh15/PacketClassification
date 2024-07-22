@@ -72,7 +72,7 @@ std::string PacketParser::toJSON() {
     j["src_bytes"] = src_bytes_;
     j["count"] = count_;
     j["srv_count"] = srv_count_; 
-    j["location"] = location_;
+    //j["location"] = location_; //to be implemented in Future
     j["src_ip"] = src_ip_;
     j["dst_ip"] = dst_ip_;
     return j.dump();

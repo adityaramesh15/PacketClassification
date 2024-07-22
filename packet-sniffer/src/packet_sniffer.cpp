@@ -53,7 +53,9 @@ bool PacketSniffer::sniffFunctor(const Packet& packet) {
 void PacketSniffer::writeData(std::string location, std::string data) {
     std::ofstream outfile(location, std::ios::app);
     if(outfile.is_open()) {
-        outfile << data << std::endl;
+        if(data != "") {
+            outfile << data << std::endl;
+        }
         outfile.close();
     } else {
         std::cerr << "Cannot open file" << std::endl;
