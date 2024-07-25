@@ -27,7 +27,6 @@ class PacketParser {
         Data - src_bytes: Number of data bytes transferred from source to destination in single connection
         Data - count: Number of connections to the same destination host as the current connection in the past two seconds
         Data - srv_count: Number of connections to the same service (port number) as the current connection in the past two seconds
-        Data - location_: Location of a packet's destination
         Data - src_ip_: Source IP Address
         Data - dst_ip_: Destination IP Address
     */
@@ -42,7 +41,6 @@ class PacketParser {
         std::string protocol_type_; 
         std::string service_; 
         std::string flag_;
-        std::string location_;
         std::string src_ip_;
         std::string dst_ip_; 
         int src_bytes_;

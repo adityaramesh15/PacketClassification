@@ -30,7 +30,6 @@ SnifferConfiguration PacketSniffer::configureSniffer() const {
 }
 
 void PacketSniffer::signalHandler(int signal_num) {
-    //TODO: Implement some form of recoverable start and start 
     std::cout << "\nPacket Collection Process was terminated" << std::endl;
     exit(signal_num);
 }
@@ -43,7 +42,7 @@ bool PacketSniffer::sniffFunctor(const Packet& packet) {
     }
 
     PacketParser parser;
-    writeData("../../data/cafe-data.txt", parser.parse(packet));
+    writeData("../../data/cafe-data.json", parser.parse(packet));
 
     //TO DO: IPC to Transmit Python
 
@@ -54,13 +53,12 @@ void PacketSniffer::writeData(std::string location, std::string data) {
     std::ofstream outfile(location, std::ios::app);
     if(outfile.is_open()) {
         if(data != "") {
-            outfile << data << std::endl;
+            outfile << data << ","<< std::endl;
         }
         outfile.close();
     } else {
         std::cerr << "Cannot open file" << std::endl;
     }
-
 }
 
 

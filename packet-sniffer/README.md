@@ -3,7 +3,7 @@
 ## Overview
 This is a simple packet sniffer written in C++ using the libtins library. It captures network packets, parses them, serializes the data to JSON format and sends it to "Packet Analysis" using IPC.
 
-Note: PacketSniffing on "eth0" is a priveleged task on personal machine — run as sudo to avoid permission errors. 
+Note: PacketSniffing on "en0" is a priveleged task on personal machine — run as sudo to avoid permission errors. 
 
 ## Setup
 ### Prerequisites

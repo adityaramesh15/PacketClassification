@@ -10,7 +10,7 @@ std::unordered_map<std::string, int> PacketParser::connection_count_;
 std::unordered_map<std::string, int> PacketParser::service_count_;
 
 PacketParser::PacketParser() : duration_(0), protocol_type_(""), service_(""), flag_(""),
-      src_bytes_(0), count_(0), srv_count_(0), location_(""), src_ip_("0.0.0.0"), dst_ip_("0.0.0.0"){}
+      src_bytes_(0), count_(0), srv_count_(0), src_ip_("0.0.0.0"), dst_ip_("0.0.0.0"){}
 
 std::string PacketParser::parse(const Packet& packet) {
     auto timestamp = std::chrono::system_clock::now();
@@ -72,7 +72,6 @@ std::string PacketParser::toJSON() {
     j["src_bytes"] = src_bytes_;
     j["count"] = count_;
     j["srv_count"] = srv_count_; 
-    //j["location"] = location_; //to be implemented in Future
     j["src_ip"] = src_ip_;
     j["dst_ip"] = dst_ip_;
     return j.dump();
