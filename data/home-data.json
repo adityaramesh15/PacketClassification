@@ -1,0 +1,2 @@
+[{"count":0,"dst_ip":"192.168.68.60","duration":0.0,"flag":"ACK","protocol_type":"tcp","service":"ephemeral - 52200","src_bytes":52,"src_ip":"4.152.45.219","srv_count":0},
+{"count":1,"dst_ip":"192.168.68.60","duration":0.000833,"flag":"ACK","protocol_type":"tcp","service":"ephemeral - 52200","src_bytes":52,"src_ip":"4.152.45.219","srv_count":1}]
