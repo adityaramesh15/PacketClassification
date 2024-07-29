@@ -20,10 +20,12 @@ def get_location(src_ip, dst_ip):
             if not r.exists(src_ip):
                 r.set(src_ip, geolite_query(src_ip))
             return r.get(src_ip)
-        else:
+        elif not ipaddress.ip_address(dst_ip).is_private:
             if not r.exists(dst_ip):
                 r.set(dst_ip, geolite_query(dst_ip))
             return r.get(dst_ip)
+        else:
+            return "Local"
         
     except redis.exceptions.ConnectionError as e:
         return f"Redis connection error: {e}"
