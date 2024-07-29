@@ -18,15 +18,7 @@ This project focuses on the real-time detection of anomalous network packets usi
 - C++ 11 or later
 - Python 3.7 or later
 - `libtins` library for packet manipulation
-
-- `JSON for Modern C++` for serialization
-- `pandas` for data manipulation and formatting
-- `numpy` for data preprocessing and model formulation
-- `scikit-learn` for IsolationForest model training and prediction
-- `redis` for Redis DB writes and retrieval
-- `geoip2` for GeoLite2 API Data requests
-- `ipaddress` for IP processing functionality
-- `python-dotenv` to load to API environment variables
+- All libraries under `requirements.txt`
 
 ### Installation
 
