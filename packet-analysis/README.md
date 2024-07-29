@@ -1,5 +1,3 @@
-Here’s the edited document with Redis start and stop instructions included:
-
 # Packet Analysis
 
 ## Overview
