@@ -5,3 +5,4 @@ geoip2
 ipaddress
 python-dotenv
 redis
+joblib
