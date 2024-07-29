@@ -23,7 +23,7 @@ This project focuses on the real-time detection of anomalous network packets usi
 - `pandas` for data manipulation and formatting
 - `numpy` for data preprocessing and model formulation
 - `scikit-learn` for IsolationForest model training and prediction
-- `psycopg2` for PostgreSQL DB writes and Retrieval
+- `redis` for Redis DB writes and retrieval
 - `geoip2` for GeoLite2 API Data requests
 - `ipaddress` for IP processing functionality
 - `python-dotenv` to load to API environment variables
