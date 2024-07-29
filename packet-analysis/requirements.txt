@@ -1,5 +1,7 @@
 pandas
 numpy
-sklearn
-requests
-psycopg2
+scikit-learn
+geoip2
+ipaddress
+python-dotenv
+redis

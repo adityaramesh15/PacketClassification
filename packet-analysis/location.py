@@ -1,31 +1,37 @@
 import os
-import psycopg2
+import redis
 import geoip2.webservice
 import ipaddress
 from dotenv import load_dotenv
-'''
-Check if DB has a value for an IP Address and return location. 
-Otherwise Query API, write to Database, and return location. 
-'''
-def get_location():
-
-    ...
 
 
+load_dotenv()
+r = redis.Redis(host='localhost', port=6379, decode_responses=True)
 
-def geolite_query(src_ip, dst_ip):
-    load_dotenv()
-    id_num = os.getenv("GEOLITE_ID")
-    api_key = os.getenv("GEOLITE_API_KEY")
-    host = "geolite.info"
+id_num = os.getenv("GEOLITE_ID")
+api_key = os.getenv("GEOLITE_API_KEY")
+host = "geolite.info"
 
-    with geoip2.webservice.Client(id_num, api_key, host) as client:
+client = geoip2.webservice.Client(id_num, api_key, host)
+
+def get_location(src_ip, dst_ip):
+    try:
         if not ipaddress.ip_address(src_ip).is_private:
-            response = client.country(src_ip)
+            if not r.exists(src_ip):
+                r.set(src_ip, geolite_query(src_ip))
+            return r.get(src_ip)
         else:
-            response = client.country(dst_ip)
+            if not r.exists(dst_ip):
+                r.set(dst_ip, geolite_query(dst_ip))
+            return r.get(dst_ip)
+        
+    except redis.exceptions.ConnectionError as e:
+        return f"Redis connection error: {e}"
 
-        return response.country.names['en']
 
-
-
+def geolite_query(ip):
+    try:
+        response = client.country(ip)
+        return str(response.country.names.get('en'))
+    except geoip2.errors.GeoIP2Error as e:
+        return str(e)
