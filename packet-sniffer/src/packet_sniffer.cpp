@@ -1,5 +1,6 @@
 #include "packet_sniffer.hpp"
 #include "packet_parser.hpp"
+#include <cpp_redis/cpp_redis>
 
 PacketSniffer::PacketSniffer() : interface_("en0"), promiscuous_(true), snapshot_length_(65535) {}
 
@@ -42,9 +43,9 @@ bool PacketSniffer::sniffFunctor(const Packet& packet) {
     }
 
     PacketParser parser;
-    writeData("../../data/cafe-data.json", parser.parse(packet));
+    std::string result = parser.parse(packet); 
+    // writeData("../../data/cafe-data.json", result);
 
-    //TO DO: IPC to Transmit Python
 
     return true; 
 }

@@ -17,8 +17,8 @@ This project focuses on the real-time detection of anomalous network packets usi
 
 - C++ 11 or later
 - Python 3.7 or later
-- `libtins` library for packet manipulation
-- All libraries under `requirements.txt`
+- `libtins`, `JSON for Modern C++`, `cpp_redis` as C++ libraries 
+- `requirements.txt` as Python libraries
 
 ### Installation
 

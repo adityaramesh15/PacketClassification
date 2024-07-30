@@ -10,8 +10,26 @@ Note: PacketSniffing on "en0" is a priveleged task on personal machine — run a
 - CMake
 - libtins (and its associated dependencies)
 - JSON for Modern C++
+- cpp_redis [here](https://github.com/cpp-redis/cpp_redis/wiki/Mac-&-Linux-Install) and [here](https://github.com/cpp-redis/cpp_redis/issues/105) for installation instructions
 
-### Building and Run
+### Redis Building
+```bash
+mkdir external
+cd external
+git clone https://github.com/cpp-redis/cpp_redis.git
+cd cpp_redis
+git submodule init && git submodule update
+cd tacopie
+git fetch origin pull/5/head:cmake-fixes
+git checkout cmake-fixes
+cd ..
+mkdir build && cd build
+cmake .. -DCMAKE_BUILD_TYPE=Release
+make
+sudo make install
+```
+
+### Sniffer Building and Run
 ```bash
 mkdir build
 cd build
