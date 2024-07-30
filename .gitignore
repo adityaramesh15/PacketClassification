@@ -198,3 +198,4 @@ cython_debug/
 
 *.rdb
 *.pkl
+cpp_redis/
