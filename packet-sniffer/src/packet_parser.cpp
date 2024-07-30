@@ -24,7 +24,7 @@ std::string PacketParser::parse(const Packet& packet) {
         return parseIPv6(*ipv6);
     } else {
         std::cout << pdu_name(packet.pdu()->inner_pdu()->pdu_type()) << " Packet Encountered." << std::endl;
-        return "";
+        return "{}";
     }
 }
 

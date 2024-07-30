@@ -14,6 +14,5 @@ add_executable(PacketSniffer ${SOURCES})
 
 target_link_libraries(PacketSniffer ${TINS_LIBRARY})
 
-
 add_subdirectory(external/cpp_redis)
 target_link_libraries(PacketSniffer SYSTEM cpp_redis tacopie)
