@@ -22,35 +22,17 @@ This project is designed to detect anomalous network packets in real-time using 
    git clone https://github.com/adityaramesh15/packet-anomaly-detection
    ```
 
-2. **Set Up C++ Environment**  
-   Ensure you have C++ 11 or later installed. Install the required C++ libraries:
-   - **libtins**: Packet crafting and sniffing library.
-   - **JSON for Modern C++**: JSON parsing and serialization library.
-   - **cpp_redis**: Redis C++ client for caching.
+2. **Configuration**  
+   Make sure to configure any necessary environment variables or settings, such as API keys for external IP-to-location services. Specifics about installation for each portion of the project are located in their respective `README.md` documents.
 
-   Ensure these libraries are included in your project's build configuration (CMake is used for this project)
+### Start
 
-3. **Set Up Python Environment**  
-   Install Python 3.7 or later. Create a virtual environment and install the necessary Python libraries:
-
-   ```bash
-   # Create a virtual environment
-   python3 -m venv .venv
-
-   # Activate the virtual environment
-   source .venv/bin/activate
-
-   # Install Python dependencies
-   pip3 install -r requirements.txt
-   ```
-
-4. **Configuration**  
-   Make sure to configure any necessary environment variables or settings, such as API keys for external IP-to-location services. Specific about installation of each portion of the project are located in their respective `README.md` document. 
-
-5. **Start the Program**  
-   Make the startup script executable and run it:
+1. **Setup Permissions**
+    ```bash
+     chmod +x start_program.sh
+    ```
+2. **Run Script**
 
    ```bash
-   chmod +x start_program.sh
    ./start_program.sh
    ```
