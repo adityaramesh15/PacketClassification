@@ -4,7 +4,6 @@ import joblib
 from location import get_location
 from sklearn.ensemble import IsolationForest
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
-from sklearn.pipeline import Pipeline
 
 class AnomalyDetector:
     def __init__(self):
