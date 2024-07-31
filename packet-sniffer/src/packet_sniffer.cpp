@@ -4,7 +4,7 @@
 
 cpp_redis::client client;
 const std::string REDIS_KEY = "packet_list";
-const size_t BUFFER_SIZE = 100;
+const int BUFFER_SIZE = 100;
 
 PacketSniffer::PacketSniffer() : interface_("en0"), promiscuous_(true), snapshot_length_(65535) {}
 
@@ -50,7 +50,7 @@ bool PacketSniffer::sniffFunctor(const Packet& packet) {
     std::string result = parser.parse(packet); 
     // writeData("../../data/cafe-data.json", result);
     client.rpush(REDIS_KEY, std::vector{result}, [](cpp_redis::reply& reply) {
-        std::cout << "SET: " << reply << std::endl;
+        // std::cout << "SET: " << reply << std::endl;
     });
     client.sync_commit();
     client.ltrim(REDIS_KEY, -BUFFER_SIZE, -1);
@@ -71,7 +71,7 @@ void PacketSniffer::writeData(std::string location, std::string data) {
 }
 
 void PacketSniffer::signalHandler(int signal_num) {
-    std::cout << "\nPacket Collection Process was terminated" << std::endl;
+    std::cout << "\nPacket Collection Process was terminated\n" << std::endl;
     client.disconnect(); 
     exit(signal_num);
 }
