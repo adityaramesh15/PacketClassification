@@ -4,6 +4,13 @@
 
 This project is designed to detect anomalous network packets in real-time using machine learning techniques. By analyzing network traffic data, the system identifies deviations from normal patterns, which can signal potential security threats or network anomalies.
 
+### Key Features
+
+- **Real-Time Packet Analysis**: Continuously monitors incoming network packets using Loop Sniffing techniques.
+- **Unsupervised Anomaly Detection**: Employs ensemble machine learning methods, specifically Isolation Forests, to identify unusual patterns in network traffic.
+- **IP Geolocation Integration**: Interfaces with external IP-to-location databases and APIs to enhance anomaly detection by providing contextual location data.
+- **JSON Data Handling**: Manages packet data in JSON format, ensuring flexible and structured data representation.
+
 ## Getting Started
 
 ### Installation
@@ -30,12 +37,6 @@ This project is designed to detect anomalous network packets in real-time using 
    ./start_program.sh
    ```
 
-## Key Features
-
-- **Real-Time Packet Analysis**: Continuously monitors incoming network packets using Loop Sniffing techniques.
-- **Unsupervised Anomaly Detection**: Employs ensemble machine learning methods, specifically Isolation Forests, to identify unusual patterns in network traffic.
-- **IP Geolocation Integration**: Interfaces with external IP-to-location databases and APIs to enhance anomaly detection by providing contextual location data.
-- **JSON Data Handling**: Manages packet data in JSON format, ensuring flexible and structured data representation.
 
 ## Project Tree
 ```
