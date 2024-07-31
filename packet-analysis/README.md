@@ -46,3 +46,9 @@ All necessary dependencies are listed in the `requirements.txt` file. They will 
 - **GeoLite2**: Used for retrieving geographical location data of IP addresses.
 - **Redis**: In-memory data structure store, used for caching IP address location data for fast retrieval.
 - **scikit-learn**: Machine learning library for implementing the Isolation Forest model.
+
+## Interpretation
+The model's predict can be used to return a decision score, which indicates how isolated a data point is. The output of this function generally ranges from -1 to 1:
+
+- Positive values (close to 1): These indicate that the data point is less likely to be an anomaly. The closer the score is to 1, the more "normal" the data point is considered, as it is well-integrated with other data points in the training set.
+- Negative values (close to -1): These indicate that the data point is more likely to be an anomaly. The closer the score is to -1, the more "anomalous" the data point is considered, as it is isolated from other data points in the training set.
