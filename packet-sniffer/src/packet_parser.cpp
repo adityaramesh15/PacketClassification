@@ -23,7 +23,7 @@ std::string PacketParser::parse(const Packet& packet) {
     } else if(const IPv6* ipv6 = packet.pdu()->find_pdu<IPv6>()) {
         return parseIPv6(*ipv6);
     } else {
-        std::cout << pdu_name(packet.pdu()->inner_pdu()->pdu_type()) << " Packet Encountered." << std::endl;
+        std::cout << pduName(packet.pdu()->inner_pdu()->pdu_type()) << " Packet Encountered." << std::endl;
         return "";
     }
 }
@@ -77,7 +77,7 @@ std::string PacketParser::toJSON() {
     return j.dump();
 }
 
-std::string PacketParser::service_name(int port) {
+std::string PacketParser::serviceName(int port) {
     switch(port) {
         case 80: return "http";
         case 443: return "https";
@@ -104,7 +104,7 @@ std::string PacketParser::service_name(int port) {
 
 }
 
-std::string PacketParser::pdu_name(PDU::PDUType type) {
+std::string PacketParser::pduName(PDU::PDUType type) {
     static const std::unordered_map<PDU::PDUType, std::string> pdu_type_map = {
         { PDU::ETHERNET_II, "Ethernet II" },
         { PDU::IP, "IP" },

@@ -50,8 +50,8 @@ class PacketParser {
         static std::unordered_map<std::string, int> connection_count_;
         static std::unordered_map<std::string, int> service_count_;
 
-        std::string service_name(int port);
-        std::string pdu_name(PDU::PDUType type);
+        std::string serviceName(int port);
+        std::string pduName(PDU::PDUType type);
 
         std::string parseIPv6(const IPv6& ipv6);
         std::string parseIPv4(const IP& ipv4);
@@ -66,14 +66,14 @@ template<typename IPType>
 void PacketParser::parseTcpUdp(const IPType& ip) {
     if (const Tins::TCP* tcp = ip.template find_pdu<Tins::TCP>()) {
         protocol_type_ = "tcp";
-        service_ = service_name(tcp->dport());
+        service_ = serviceName(tcp->dport());
         flag_ = tcp->get_flag(TCP::SYN) ? "SYN" : 
                 tcp->get_flag(TCP::FIN) ? "FIN" :
                 tcp->get_flag(TCP::RST) ? "RST" : 
                 tcp->get_flag(TCP::ACK) ? "ACK" : "NONE";
     } else if (const Tins::UDP* udp = ip.template find_pdu<Tins::UDP>()) {
         protocol_type_ = "udp"; 
-        service_ = service_name(udp->dport());
+        service_ = serviceName(udp->dport());
         flag_ = "none"; 
     } else {
         service_ = "unknown";

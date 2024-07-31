@@ -72,3 +72,4 @@ This project is designed to detect anomalous network packets in real-time using 
 ![high level](./images/high-level.png)
 
 ### Low Level
+![low level](./images/low-level.png)
