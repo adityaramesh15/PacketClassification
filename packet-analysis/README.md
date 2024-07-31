@@ -26,7 +26,7 @@ pip3 install -r requirements.txt
 
 3. **Run the packet analysis script**:
     ```bash
-    python3 TEMP_NAME.py
+    python3 main.py
     ```
 
 4. **Stop the Redis server** (after you are done using it):
