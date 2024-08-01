@@ -6,3 +6,4 @@ ipaddress
 python-dotenv
 redis
 joblib
+pytest

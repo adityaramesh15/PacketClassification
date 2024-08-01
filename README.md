@@ -43,11 +43,14 @@ This project is designed to detect anomalous network packets in real-time using 
 .
 └── packet-anomaly-detection/
     ├── data/
-    │   ├── cafe-data.json
-    │   ├── dpi-data.json
-    │   ├── home-data.json
+    │   ├── cafe-data
+    │   ├── dpi-data
+    │   ├── home-data
     │   └── mixed-anomaly
     ├── packet-analysis/
+    │   ├── tests/
+    │   │   ├── test_location.py
+    │   │   └── test_main_model.py
     │   ├── location.py
     │   ├── main.py
     │   ├── model.py

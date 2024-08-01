@@ -52,3 +52,12 @@ The model's predict can be used to return a decision score, which indicates how 
 
 - Positive values (close to 1): These indicate that the data point is less likely to be an anomaly. The closer the score is to 1, the more "normal" the data point is considered, as it is well-integrated with other data points in the training set.
 - Negative values (close to -1): These indicate that the data point is more likely to be an anomaly. The closer the score is to -1, the more "anomalous" the data point is considered, as it is isolated from other data points in the training set.
+
+## Tests
+You can run these tests with the following commands:
+
+```bash
+export PYTHONPATH="${PYTHONPATH}:/Users/adityaramesh/Desktop/CS/Projects/packet-anomaly-detection/packet-analysis"
+python3 -m pytest packet-analysis/tests
+```
+Make sure to replace test_name.py with the filename of the specific test case you want to run. 
