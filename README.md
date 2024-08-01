@@ -13,33 +13,32 @@ This project is designed to detect anomalous network packets in real-time using 
 
 ## Project Tree
 ```
-.
-└── packet-anomaly-detection/
-    ├── data/
-    │   ├── cafe-data
-    │   ├── dpi-data
-    │   ├── home-data
-    │   └── mixed-anomaly
-    ├── packet-analysis/
-    │   ├── tests/
-    │   │   ├── test_location.py
-    │   │   └── test_main_model.py
-    │   ├── location.py
-    │   ├── main.py
-    │   ├── model.py
-    │   └── requirements.txt
-    ├── packet-sniffer/
-    │   ├── build/
-    │   ├── external/
-    │   │   └── cpp_redis/
-    │   ├── include/
-    │   │   ├── packet_parser.hpp
-    │   │   └── packet_sniffer.hpp
-    │   ├── src/
-    │   │   ├── packet_parser.cpp
-    │   │   └── packet_sniffer.cpp
-    │   └── CMakeLists.txt
-    └── start_program.sh
+packet-anomaly-detection/
+├── data/
+│   ├── cafe-data
+│   ├── dpi-data
+│   ├── home-data
+│   └── mixed-anomaly
+├── packet-analysis/
+│   ├── tests/
+│   │   ├── test_location.py
+│   │   └── test_main_model.py
+│   ├── location.py
+│   ├── main.py
+│   ├── model.py
+│   └── requirements.txt
+├── packet-sniffer/
+│   ├── build/
+│   ├── external/
+│   │   └── cpp_redis/
+│   ├── include/
+│   │   ├── packet_parser.hpp
+│   │   └── packet_sniffer.hpp
+│   ├── src/
+│   │   ├── packet_parser.cpp
+│   │   └── packet_sniffer.cpp
+│   └── CMakeLists.txt
+└── start_program.sh
 ```
 
 ## Architecture
