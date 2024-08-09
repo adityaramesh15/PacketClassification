@@ -4,7 +4,7 @@
 This portion of the project features machine learning for anomalous packet detection using Isolation Forests from scikit-learn written in Python. Additionally, it involves a hybridized caching solution for retrieving location data for IP addresses using the GeoLite2 API and database queries/writes from Redis.
 
 ## Setup
-To set up the project, ensure you use a virtual environment (venv) to manage dependencies. Follow the steps below:
+To set up the project as a *standalone* portion, ensure you use a virtual environment (venv) to manage dependencies. This is assuming you are using this project without the packet-sniffer portion. Follow the steps below:
 
 ```bash
 cd packet-analysis

@@ -79,14 +79,21 @@ Before installing and running the project, ensure you have the following:
     ```bash
     chmod +x start_program.sh
     ```
-2. **Run Script**
+2. **Create and Activate Virtual Environment**
+   ```bash
+   python3 -m venv .venv
+   source .venv/bin/activate
+   pip3 install -r ./packet-analysis/requirements.txt
+   ```
+3. **Run Script**
 
    ```bash
    ./start_program.sh
    ```
+4. **End Script**
+   Terminate Program by giving Ctrl-C for SIGINT
 
 ## Usage
-
 Once the system is running, you can interact with it via the command line. Editing the output of `main.py` will redirect where the output of the `IsolationTree` model goes. 
 
 ## Troubleshooting
