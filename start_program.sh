@@ -10,7 +10,7 @@ CPP_PID=$!
 
 echo "Starting Python program..."
 python3 ./packet-analysis/main.py &
-PYTHON_ID=$!
+PYTHON_PID=$!
 
 function cleanup {
     echo "Shutting down..."
