@@ -65,7 +65,7 @@ export PYTHONPATH="${PYTHONPATH}:/Users/adityaramesh/Desktop/CS/Projects/packet-
 python3 -m pytest packet-analysis/tests
 ```
 
-Make sure to replace `test_name.py` with the filename of the specific test case you want to run. 
+Make sure to replace `test_name.py` with the filename of the specific test case you want to run and check to see that the absolute filepath reflects your directory stucture. 
 
 ## Environment Variables
 
